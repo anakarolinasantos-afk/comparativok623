@@ -316,8 +316,9 @@ body{background:var(--bg);color:var(--text);font-family:'Poppins',sans-serif;min
       <div class="premise-row"><span class="pn">Câmbio</span><span>Referência: R$ 5,0800 (para entrada, saldo e desembaraço)</span><span>Entrada 20%: R$ 4,9670<br>Saldo 80%: R$ 5,3200<br>Desembaraço: R$ 5,2132</span><span class="impact" id="pFx"></span></div>
       <div class="premise-row"><span class="pn">Frete internacional</span><span>US$ 6.745,00 por CNTR<br>Total US$ 60.705,00</span><span>US$ 6.775,00 por CNTR<br>Total US$ 60.975,00</span><span class="impact">+US$ 270,00 (+0,44%)</span></div>
       <div class="premise-row"><span class="pn">Seguro</span><span>US$ 2.005,13</span><span>US$ 2.091,75</span><span class="impact">+US$ 86,62 (+4,32%)</span></div>
-      <div class="premise-row"><span class="pn">Frete marítimo local</span><span>THC R$ 10.800,00<br>Drop off R$ 120,00<br>Logistic Fee R$ 250,00</span><span>THC R$ 14.535,00<br>Drop off R$ 2.953,50<br>Logistic Fee removida<br>Novos: IOF R$ 11.301,59 e Damage Fee R$ 2.859,65</span><span class="impact" id="pFM"></span></div>
+      <div class="premise-row"><span class="pn">Frete marítimo local</span><span>THC R$ 10.800,00<br>Drop off / Damage Fee R$ 120,00<br>Logistic Fee R$ 250,00</span><span>THC R$ 14.535,00<br>Drop off R$ 2.953,50 + Damage Fee R$ 2.859,65<br>Logistic Fee removida<br>Novo: IOF R$ 11.301,59</span><span class="impact" id="pFM"></span></div>
       <div class="premise-row"><span class="pn">Armazenagem 1º período</span><span>R$ 24.556,14</span><span>R$ 30.000,00</span><span class="impact">+R$ 5.443,86 (+22,17%)</span></div>
+      <div class="premise-row"><span class="pn">Outras taxas de desembaraço</span><span>Correios R$ 50,00</span><span>Correios removido<br>Novo: Catálogo Duimp R$ 640,00</span><span class="impact">+R$ 590,00</span></div>
       <div class="premise-row"><span class="pn">Frete terrestre (Porto x Cliente)</span><span>R$ 12.000,00 por CNTR<br>Total R$ 108.000,00</span><span>R$ 11.000,00 por CNTR<br>Total R$ 99.000,00</span><span class="impact">-R$ 9.000,00 (-8,33%)</span></div>
       <div class="premise-row"><span class="pn">Mercadoria (FOB)</span><span>US$ 247.776,00</span><span>US$ 247.776,00</span><span class="impact">Sem alteração em USD</span></div>
     </div>
@@ -337,7 +338,7 @@ const fx=[
 const groups=[
   {n:'Produto (FOB)',s:'Produto',a:1258702.08,r:1295425.94},
   {n:'Frete Internacional',s:'Frete Intl.',a:320716.66,r:322901.77},
-  {n:'Seguro',s:'Seguro',a:10593.48,r:10904.71},
+  {n:'Seguro',s:'Seguro',a:10593.48,r:10919.77},
   {n:'Impostos de importação (clique para detalhar)',s:'Impostos',ch:[
     ['Imposto de Importação (I.I.)',394317.38,405121.35],
     ['IPI',0,0],
@@ -349,9 +350,8 @@ const groups=[
     ['Liberação de BL',650,635],
     ['Capatazia / THC',10800,14535],
     ['Desconsolidação',528.32,423.65],
-    ['Drop off',120,2953.50],
+    ['Drop off / Damage Fee',120,5813.15],
     ['IOF',0,11301.59],
-    ['Damage Fee',0,2859.65],
     ['Bunker',155,2144.74],
     ['Logistic Fee',250,0],
     ['ISPS no destino',264.16,2144.74]]},
@@ -359,7 +359,8 @@ const groups=[
     ['AFRMM - Marinha Mercante',26541.33,26612.78],
     ['Armazenagem 1º período',24556.14,30000],
     ['Despachante e SDA',3300,3055.50],
-    ['Correios',50,50],
+    ['Catálogo Duimp',0,640],
+    ['Correios',50,0],
     ['Lavagem de CTNR',2250,2250],
     ['Taxa Madeira',200,200],
     ['Serviços Kaizen (7%)',111300.86,111300.86]]},
@@ -371,10 +372,10 @@ const apr=groups.map(g=>g.a),rea=groups.map(g=>g.r),cats=groups.map(g=>g.s);
 const totalApr=apr.reduce((a,b)=>a+b,0),totalReal=rea.reduce((a,b)=>a+b,0);
 const totalAprST=totalApr+st.a;
 const items=[
-  {n:'Prancha 300x50x1,5x2000 (11,65 kg)',q:1400,uST:171.61,uSem:157.48,uRea:162.40,tRea:227366.83,tST:240250.23},
-  {n:'Prancha 300x50x1,5x2500 (14,49 kg)',q:5600,uST:213.48,uSem:195.90,uRea:202.03,tRea:1131355.42,tST:1195461.96},
-  {n:'Prancha 300x50x1,5x3000 (17,33 kg)',q:5600,uST:253.53,uSem:232.66,uRea:239.94,tRea:1343655.77,tST:1419791.99},
-  {n:'Grampo p/ prancha Ø48,3 (0,63 kg)',q:40000,uST:8.66,uSem:7.95,uRea:8.19,tRea:327744.78,tST:346315.94}
+  {n:'Prancha 300x50x1,5x2000 (11,65 kg)',q:1400,uST:171.61,uSem:157.48,uRea:162.44,tST:240250.23,tSem:220467.98,tRea:227412.23},
+  {n:'Prancha 300x50x1,5x2500 (14,49 kg)',q:5600,uST:213.48,uSem:195.90,uRea:202.07,tST:1195461.96,tSem:1097027.41,tRea:1131581.33},
+  {n:'Prancha 300x50x1,5x3000 (17,33 kg)',q:5600,uST:253.53,uSem:232.66,uRea:239.99,tST:1419791.99,tSem:1302886.07,tRea:1343924.07},
+  {n:'Grampo p/ prancha Ø48,3 (0,63 kg)',q:40000,uST:8.66,uSem:7.95,uRea:8.20,tST:346315.94,tSem:317800.23,tRea:327810.23}
 ];
 
 /* ===== FORMATOS ===== */
@@ -529,13 +530,12 @@ items.forEach(it=>{
     '<span class="val">'+fmtBRL(it.uST)+'</span>'+
     '<span class="val">'+fmtBRL(it.uSem)+'</span>'+
     '<span class="val hi">'+fmtBRL(it.uRea)+'</span>'+
-    vb((it.uRea/it.uST-1)*100)+vb((it.uRea/it.uSem-1)*100)+
+    vb((it.tRea/it.tST-1)*100)+vb((it.tRea/it.tSem-1)*100)+
     '<span class="val hi">'+fmtBRL(it.tRea)+'</span></div>';
 });
-const tST=items.reduce((s,i)=>s+i.tST,0),tRea=items.reduce((s,i)=>s+i.tRea,0);
-ib+='<div class="items-row total"><span class="cat-name" style="font-weight:700">TOTAL</span><span class="val">'+qtd.toLocaleString('pt-BR')+' kg</span><span class="val" style="font-weight:700;color:var(--blue)">'+fmtBRL(tST)+'</span><span class="val"></span><span class="val"></span>'+
-  vb((tRea/tST-1)*100)+vb(varComp)+
-  '<span class="val hi" style="font-weight:700">'+fmtBRL(tRea)+'</span></div>';
+ib+='<div class="items-row total"><span class="cat-name" style="font-weight:700">TOTAL</span><span class="val">'+qtd.toLocaleString('pt-BR')+' kg</span><span class="val" style="font-weight:700;color:var(--blue)">'+fmtBRL(totalAprST)+'</span><span class="val" style="font-weight:700;color:var(--blue)">'+fmtBRL(totalApr)+'</span><span class="val"></span>'+
+  vb(varTot)+vb(varComp)+
+  '<span class="val hi" style="font-weight:700">'+fmtBRL(totalReal)+'</span></div>';
 $('itemsBody').innerHTML=ib;
 
 function showTab(tab,e){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));$('tab-'+tab).classList.add('active');e.target.classList.add('active')}
