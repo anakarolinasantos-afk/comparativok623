@@ -133,7 +133,11 @@ body{background:var(--bg);color:var(--text);font-family:'Poppins',sans-serif;min
   <h1 class="hero-title">Aprovado <span>x</span> Realizado</h1>
   <div class="hero-meta">
     <div class="hero-meta-item"><span class="hero-meta-label">Cliente</span><span class="hero-meta-val">MIP Engenharia</span></div>
-    <div class="hero-meta-item"><span class="hero-meta-label">Referência</span><span class="hero-meta-val">K623</span></div>
+    <div class="hero-meta-item"><span class="hero-meta-label">Produto</span><span class="hero-meta-val">Material para andaimes (prancha de aço e grampo)</span></div>
+    <div class="hero-meta-item"><span class="hero-meta-label">Carga</span><span class="hero-meta-val">219.702 kg - 9 CNTR FCL</span></div>
+    <div class="hero-meta-item"><span class="hero-meta-label">NCM</span><span class="hero-meta-val">7308.40.00</span></div>
+    <div class="hero-meta-item"><span class="hero-meta-label">Rota</span><span class="hero-meta-val">Xingang → Santos → Belo Horizonte</span></div>
+    <div class="hero-meta-item"><span class="hero-meta-label">FOB</span><span class="hero-meta-val">US$ 247.776,00</span></div>
   </div>
   <div class="hero-badges">
     <div class="hero-badge green" id="badgeTotal"></div>
@@ -160,9 +164,10 @@ body{background:var(--bg);color:var(--text);font-family:'Poppins',sans-serif;min
     <div class="alert">
       <div class="alert-icon">⚠️</div>
       <div>
-        <div class="alert-title">Premissas alteradas</div>
+        <div class="alert-title">Comparação como orçado (inclui a ST do estudo inicial)</div>
         <ul>
-          <li>O estudo inicial previa Substituição Tributária, porém, como a carga é para consumo, a prévia não contabiliza ST.</li>
+          <li>O estudo inicial previa <b id="c_stVal"></b> de Substituição Tributária. Como a carga é para consumo, a prévia não tem ST.</li>
+          <li>É essa linha que explica o resultado abaixo do orçado. Sem ela, as demais linhas variam <b id="c_varComp"></b> (aba "Comparação sem ST").</li>
           <li>Créditos de PIS/COFINS e ICMS desconsiderados a pedido do cliente: a análise usa o Custo Total, antes dos créditos.</li>
         </ul>
       </div>
@@ -213,7 +218,7 @@ body{background:var(--bg);color:var(--text);font-family:'Poppins',sans-serif;min
       <div>
         <div class="alert-title">Comparação das linhas equivalentes (sem a ST do estudo inicial)</div>
         <ul>
-          <li><b>Base comparável:</b> a ST fica fora do comparativo. A comparação usa o Custo Total, sem créditos.</li>
+          <li><b>Base comparável:</b> a ST fica fora dos dois lados, para comparar só o que existe nos dois estudos. A comparação usa o Custo Total, antes dos créditos.</li>
           <li><b>Câmbio:</b> o FOB é o mesmo em dólar (US$ 247.776,00). A variação de <b id="s_prodVar"></b> na linha de produto vem do câmbio: taxa efetiva de <b id="s_eff"></b> contra a referência de R$ 5,0800.</li>
         </ul>
       </div>
