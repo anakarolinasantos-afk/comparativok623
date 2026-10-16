@@ -82,14 +82,6 @@ body{background:var(--bg);color:var(--text);font-family:'Poppins',sans-serif;min
 .chart-legend{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:14px}
 .leg-item{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted2);font-weight:500}
 .leg-dot{width:12px;height:12px;border-radius:3px;flex-shrink:0}
-.unit-card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:28px}
-.unit-card{background:var(--surface);border:1.5px solid var(--border2);border-radius:12px;padding:16px 18px;position:relative;overflow:hidden}
-.unit-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
-.unit-card.blue::before{background:var(--blue)}.unit-card.orange::before{background:var(--orange)}.unit-card.red::before{background:var(--red)}.unit-card.amber::before{background:var(--amber)}.unit-card.green::before{background:var(--green)}
-.unit-card-label{font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:6px}
-.unit-card-val{font-size:24px;font-weight:700}
-.unit-card.blue .unit-card-val{color:var(--blue)}.unit-card.orange .unit-card-val{color:var(--orange)}.unit-card.red .unit-card-val{color:var(--red)}.unit-card.amber .unit-card-val{color:var(--amber)}.unit-card.green .unit-card-val{color:var(--green)}
-.unit-card-sub{font-size:10.5px;color:var(--muted);margin-top:5px}
 .items-head,.items-row{display:grid;grid-template-columns:2.2fr .7fr 1fr 1fr 1fr .9fr .9fr 1.2fr}
 .items-head{padding:12px 24px;background:var(--surface2);border-bottom:1px solid var(--border2);font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
 .items-head span:not(:first-child),.items-row .val{text-align:right}
@@ -150,7 +142,6 @@ body{background:var(--bg);color:var(--text);font-family:'Poppins',sans-serif;min
   <div class="tabs">
     <button class="tab active" onclick="showTab('com',event)">Comparação com ST</button>
     <button class="tab" onclick="showTab('sem',event)">Comparação sem ST</button>
-    <button class="tab" onclick="showTab('unit',event)">Custo unitário</button>
     <button class="tab" onclick="showTab('itens',event)">Por item</button>
   </div>
 
@@ -255,35 +246,6 @@ body{background:var(--bg);color:var(--text);font-family:'Poppins',sans-serif;min
     </div>
   </div>
 
-  <!-- CUSTO UNITÁRIO -->
-  <div id="tab-unit" class="section">
-    <div class="unit-card-grid">
-      <div class="unit-card blue"><div class="unit-card-label">Unitário aprovado (com ST)</div><div class="unit-card-val" id="uAprST"></div><div class="unit-card-sub" id="uAprSTSub"></div></div>
-      <div class="unit-card blue"><div class="unit-card-label">Unitário aprovado (sem ST)</div><div class="unit-card-val" id="uApr"></div><div class="unit-card-sub" id="uAprSub"></div></div>
-      <div class="unit-card orange"><div class="unit-card-label">Unitário realizado</div><div class="unit-card-val" id="uRea"></div><div class="unit-card-sub" id="uReaSub"></div></div>
-      <div class="unit-card green"><div class="unit-card-label">Variação vs com ST</div><div class="unit-card-val" id="uVarST"></div><div class="unit-card-sub" id="uVarSTSub"></div></div>
-      <div class="unit-card red"><div class="unit-card-label">Variação vs sem ST</div><div class="unit-card-val" id="uVar"></div><div class="unit-card-sub" id="uVarSub"></div></div>
-    </div>
-    <div class="charts-grid">
-      <div class="chart-wrap full">
-        <div class="chart-title">Custo unitário (R$/kg) por categoria - aprovado (sem ST) x realizado</div>
-        <div class="chart-legend">
-          <span class="leg-item"><span class="leg-dot" style="background:#2563eb"></span>Aprovado</span>
-          <span class="leg-item"><span class="leg-dot" style="background:#ea580c"></span>Realizado</span>
-        </div>
-        <div style="position:relative;height:320px"><canvas id="unitBarChart"></canvas></div>
-      </div>
-      <div class="chart-wrap">
-        <div class="chart-title">Composição do unitário aprovado (sem ST)</div>
-        <div style="position:relative;height:280px"><canvas id="unitPieApr"></canvas></div>
-      </div>
-      <div class="chart-wrap">
-        <div class="chart-title">Composição do unitário realizado</div>
-        <div style="position:relative;height:280px"><canvas id="unitPieRea"></canvas></div>
-      </div>
-    </div>
-  </div>
-
   <!-- POR ITEM -->
   <div id="tab-itens" class="section">
     <div class="table-wrap items-wrap">
@@ -325,12 +287,12 @@ const groups=[
   {n:'ICMS',s:'ICMS',a:479342.61,r:495740.74},
   {n:'Desp. Desembaraço (clique para detalhar)',s:'Desembaraço',ch:[
     ['AFRMM - Marinha Mercante',26541.33,26612.78],
-    ['Armazenagem 1º período',24556.14,30000],
+    ['Armazenagem 1º período',24556.14,28044.25],
     ['Despachante e SDA',3300,3055.50],
-    ['Catálogo Duimp',0,640],
+    ['Catálogo Duimp',0,160],
     ['Correios',50,0],
     ['Lavagem de CTNR',2250,2250],
-    ['Taxa Madeira',200,200],
+    ['Taxa Madeira',200,350],
     ['Serviços Kaizen (7%)',111300.86,111300.86]]},
   {n:'Frete Terrestre (Porto x Cliente)',s:'Frete terrestre',a:108000,r:99000}
 ];
@@ -340,10 +302,10 @@ const apr=groups.map(g=>g.a),rea=groups.map(g=>g.r),cats=groups.map(g=>g.s);
 const totalApr=apr.reduce((a,b)=>a+b,0),totalReal=rea.reduce((a,b)=>a+b,0);
 const totalAprST=totalApr+st.a;
 const items=[
-  {n:'Prancha 300x50x1,5x2000 (11,65 kg)',q:1400,uST:171.61,uSem:157.48,uRea:162.44,tST:240250.23,tSem:220467.98,tRea:227412.23},
-  {n:'Prancha 300x50x1,5x2500 (14,49 kg)',q:5600,uST:213.48,uSem:195.90,uRea:202.07,tST:1195461.96,tSem:1097027.41,tRea:1131581.33},
-  {n:'Prancha 300x50x1,5x3000 (17,33 kg)',q:5600,uST:253.53,uSem:232.66,uRea:239.99,tST:1419791.99,tSem:1302886.07,tRea:1343924.07},
-  {n:'Grampo p/ prancha Ø48,3 (0,63 kg)',q:40000,uST:8.66,uSem:7.95,uRea:8.20,tST:346315.94,tSem:317800.23,tRea:327810.23}
+  {n:'Prancha 300x50x1,5x2000 (11,65 kg)',q:1400,uST:171.61,uSem:157.48,uRea:162.31,tST:240250.23,tSem:220467.98,tRea:227240.72},
+  {n:'Prancha 300x50x1,5x2500 (14,49 kg)',q:5600,uST:213.48,uSem:195.90,uRea:201.92,tST:1195461.96,tSem:1097027.41,tRea:1130727.9},
+  {n:'Prancha 300x50x1,5x3000 (17,33 kg)',q:5600,uST:253.53,uSem:232.66,uRea:239.81,tST:1419791.99,tSem:1302886.07,tRea:1342910.49},
+  {n:'Grampo p/ prancha Ø48,3 (0,63 kg)',q:40000,uST:8.66,uSem:7.95,uRea:8.19,tST:346315.94,tSem:317800.23,tRea:327562.99}
 ];
 
 /* ===== FORMATOS ===== */
@@ -467,21 +429,6 @@ new Chart($('barChart2'),{type:'bar',data:{labels:catsST,datasets:barDS(aprST,re
 const diffs=reaST.map((r,i)=>r-aprST[i]);
 new Chart($('diffChart2'),{type:'bar',data:{labels:catsST,datasets:[{label:'Diferença',data:diffs,backgroundColor:diffs.map(v=>v>0?'rgba(220,38,38,0.7)':'rgba(30,158,98,0.7)'),borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>' '+sgn(ctx.parsed.y)}}},scales:scalesBRL}});
 new Chart($('pieChart2'),{type:'doughnut',data:{labels:catsST,datasets:[{data:aprST,backgroundColor:pieColors,borderColor:'#fff',borderWidth:3,hoverOffset:8}]},options:pieOpt(aprST)});
-
-/* ===== UNITÁRIO ===== */
-const unitApr=apr.map(v=>v/qtd),unitRea=rea.map(v=>v/qtd);
-const uAST=totalAprST/qtd,uA=totalApr/qtd,uR=totalReal/qtd;
-$('uAprST').textContent=fmtU(uAST);$('uAprSTSub').textContent='por kg - total '+fmtBRL(totalAprST);
-$('uApr').textContent=fmtU(uA);$('uAprSub').textContent='por kg - total '+fmtBRL(totalApr);
-$('uRea').textContent=fmtU(uR);$('uReaSub').textContent='por kg - total '+fmtBRL(totalReal);
-$('uVarST').textContent=(uR-uAST>=0?'+':'-')+fmtU(Math.abs(uR-uAST));
-$('uVarSTSub').textContent=pct(varTot)+' por kg - '+sgn(difTot)+' no total';
-$('uVar').textContent=(uR-uA>=0?'+':'-')+fmtU(Math.abs(uR-uA));
-$('uVarSub').textContent=pct(varComp)+' por kg - '+sgn(difComp)+' no total';
-new Chart($('unitBarChart'),{type:'bar',data:{labels:cats,datasets:[{label:'Aprovado (R$/kg)',data:unitApr,backgroundColor:'rgba(37,99,235,0.75)',borderRadius:6},{label:'Realizado (R$/kg)',data:unitRea,backgroundColor:'rgba(234,88,12,0.75)',borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>' R$ '+ctx.parsed.y.toFixed(4)+'/kg'}}},scales:{x:scalesBRL.x,y:{ticks:{color:tc,font:{family:ff,size:11},callback:v=>'R$ '+v.toFixed(2)},grid:{color:gc}}}}});
-const upie=(arr)=>({responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:tc,font:{family:ff,size:9},padding:8,boxWidth:8}},tooltip:{callbacks:{label:ctx=>' R$ '+ctx.parsed.toFixed(4)+'/kg ('+(ctx.parsed/arr.reduce((a,b)=>a+b,0)*100).toFixed(1)+'%)'}}}});
-new Chart($('unitPieApr'),{type:'doughnut',data:{labels:cats,datasets:[{data:unitApr,backgroundColor:pieColors,borderColor:'#fff',borderWidth:3,hoverOffset:8}]},options:upie(unitApr)});
-new Chart($('unitPieRea'),{type:'doughnut',data:{labels:cats,datasets:[{data:unitRea,backgroundColor:pieColors,borderColor:'#fff',borderWidth:3,hoverOffset:8}]},options:upie(unitRea)});
 
 /* ===== ITENS ===== */
 function vb(v){return '<span><span class="badge '+(v<0?'down':'up')+'">'+(v<0?'▼':'▲')+' '+pctAbs(v)+'</span></span>'}
